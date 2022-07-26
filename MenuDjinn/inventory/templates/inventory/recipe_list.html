@@ -1,0 +1,21 @@
+{% extends "./base.html" %}
+
+{% block content %}
+<h2>Recipe List</h2>
+<table id="recipes">
+  <tr>
+    <th>Menu Item</th>
+    <!--<th>Ingredient Quantity</th>
+    <th>Ingredient</th>-->
+  </tr>
+  <tr>
+    {% for recipe in recipe_list %}
+  </tr>
+  <tr>
+    <td>temp</td>
+    <!--<td>{{ recipe.ingredient.ingredient_name }}</td>
+    <td>{{ recipe.ingredient_quantity }}</td>-->
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
