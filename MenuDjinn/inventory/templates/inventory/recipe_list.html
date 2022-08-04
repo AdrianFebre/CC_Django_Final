@@ -2,19 +2,24 @@
 
 {% block content %}
 <h2>Recipe List</h2>
+<a href="{% url 'recipecreate' %}"><button class="btn">Add a Recipe</button></a>
 <table id="recipes">
   <tr>
     <th>Menu Item</th>
-    <!--<th>Ingredient Quantity</th>
-    <th>Ingredient</th>-->
+    <th>Ingredient Quantity</th>
+    <th>Units</th>
+    <th>Ingredient</th>
+  </tr>
+  {% for recipe in object_list %}
+  <tr>
+    <td>{{ recipe.menu_item.item_name }}</td>
+    <td>{{ recipe.ingredient_quantity }}</td>
+    <td>{{ recipe.ingredient.units }}</td>
+    <td>{{ recipe.ingredient.ingredient_name }}</td>
   </tr>
   <tr>
-    {% for recipe in recipe_list %}
-  </tr>
-  <tr>
-    <td>temp</td>
-    <!--<td>{{ recipe.ingredient.ingredient_name }}</td>
-    <td>{{ recipe.ingredient_quantity }}</td>-->
+    {% empty %}
+    <td>No recipes yet</td>
   </tr>
   {% endfor %}
 </table>

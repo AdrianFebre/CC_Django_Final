@@ -2,6 +2,7 @@
 
 {% block content %}
 <h2>Menu List</h2>
+<a href="{% url 'menucreate' %}"><button class="btn">Add a Menu Item</button></a>
 <table id="menus">
   <tr>
     <th>Name</th>
@@ -9,12 +10,16 @@
     <th>Price</th>
   </tr>
 	<tr>
-  {% for menu in menu_list %}
+  {% for menu in object_list %}
   </tr>
   <tr>
     <td>{{ menu.item_name }}</td>
     <td>{{ menu.item_description }}</td>
     <td>{{ menu.item_price }}</td>
+  </tr>
+  <tr>
+    {% empty %}
+    <td>No menu items</td>
   </tr>
   {% endfor %}
 </table>

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Ingredients, MenuItems, RecipeRequirements, Purchase
+from .forms import IngredientAddForm, MenuAddForm, PurchaseForm, RecipeAddForm
 
 # Create your views here.
 
@@ -43,23 +44,41 @@ Editing Views
 class IngredientsCreate(CreateView):
     model = Ingredients
     template_name = 'inventory/ingredients_create_form.html'
+    '''
     fields = ['ingredient_name', 'quantity', 'price_per_unit', 'units']
     success_url = 'ingredients/list/'  # these don't work right now
+    '''
+    # now, with form added
+    form_class = IngredientAddForm
 
 class IngredientsUpdate(UpdateView):
     model = Ingredients
     template_name = 'inventory/ingredients_update_form.html'
     fields = ['ingredient_name', 'quantity', 'price_per_unit', 'units']
-    success_url = 'ingredients/list/'
+    success_url = '..'
 
 class IngredientsDelete(DeleteView):
     model = Ingredients
     template_name = 'inventory/ingredients_delete_form.html'
-    success_url = 'ingredients/list/'
+    success_url = '..'
+
+# menu and recipe create
+class MenuCreate(CreateView):
+    model = MenuItems
+    template_name = 'inventory/menu_create_form.html'
+    form_class = MenuAddForm
+
+class RecipeCreate(CreateView):
+    model = RecipeRequirements
+    template_name = 'inventory/recipe_create_form.html'
+    form_class = RecipeAddForm
 
 # I think it'd be nice to make purchases w/o admin priveleges
 class PurchaseCreate(CreateView):
     model = Purchase
     template_name = 'inventory/purchase_form.html'
+    '''
     fields = ['customer_name', 'menu_item', 'order_quantity']
-    success_url = 'purchase/list/'
+    success_url = '..'
+    '''
+    form_class = PurchaseForm

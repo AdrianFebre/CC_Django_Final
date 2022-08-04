@@ -11,13 +11,17 @@
     <th>Quantity Ordered</th>
   </tr>
 	<tr>
-  {% for purchase in purchase_list %}
+  {% for purchase in object_list %}
   </tr>
   <tr>
     <td>{{ purchase.customer_name }}</td>
     <td>{{ purchase.purchase_timestamp }}</td>
     <td>{{ purchase.menu_item }}</td>
     <td>{{ purchase.order_quantity }}</td>
+  </tr>
+  <tr>
+    {% empty %}
+    <td>No purchases yet</td>
   </tr>
   {% endfor %}
 </table>

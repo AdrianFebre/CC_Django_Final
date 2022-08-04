@@ -24,6 +24,10 @@
     <td><a href="{% url 'ingredientsupdate' ingredient.id %}">Edit</a></td>
     <td><a href="{% url 'ingredientsdelete' ingredient.id %}">Delete</a></td>
   </tr>
+  <tr>
+    {% empty %}
+    <td>No ingredients yet</td>
+  </tr>
   {% endfor %}
 </table>
 {% endblock %}

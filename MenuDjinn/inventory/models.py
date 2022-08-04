@@ -14,6 +14,9 @@ class Ingredients(models.Model):
     def __str__(self):
         # it's good practice
         return f"{self.ingredient_name} - {self.quantity} {self.units}"
+    
+    def get_absolute_url(self):
+        return '..'
 
 class MenuItems(models.Model):
     # descriptions
@@ -22,13 +25,14 @@ class MenuItems(models.Model):
     # numerical, following the Ingredients field choice
     item_price = models.FloatField(default=0)
 
-    '''
     def __str__(self):
         if self.item_description != '':
             return self.item_name
         else:
             return self.item_name + '\n' + self.item_description
-    '''
+
+    def get_absolute_url(self):
+        return '..'
 
 class RecipeRequirements(models.Model):
     # this should self-delete upon deletion of MenuItems or Ingredients
@@ -41,10 +45,11 @@ class RecipeRequirements(models.Model):
     ingredient = models.ForeignKey(Ingredients, on_delete=models.CASCADE)
     ingredient_quantity = models.FloatField(default=0)  # can I skip this? If not...how do I implement correctly?
 
-    '''
     def __str__(self):
         return f'menu item: {self.menu_item.item_name}' + '\n' + f'ingredient: {self.ingredient.ingredient_name}'
-    '''
+    
+    def get_absolute_url(self):
+        return '..'
 
 # optionally, could create "sub-orders" here, which I pass to Purchase to close out full tabs
 
@@ -57,7 +62,7 @@ class Purchase(models.Model):
     '''
     # basic metadata
     customer_name = models.CharField(max_length=50)
-    purchase_timestamp = models.DateField()
+    purchase_timestamp = models.DateField(default=datetime.now())  # temp: default = now
 
     # now I need to add the menu items and their quants...hm...
     # I think I could sloppily ad-hoc it here, or define it in MenuItems as a param
@@ -87,7 +92,6 @@ class Purchase(models.Model):
         I honestly might have to handle this in views somehow, let's pause for now
         '''
         return
-
     
     def __str__(self):
         receipt_string = '''{0}
@@ -97,4 +101,6 @@ class Purchase(models.Model):
                       self.order_quantity, self.purchase_price)
         return receipt_string
 
+    def get_absolute_url(self):
+        return '..'
 
