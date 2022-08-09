@@ -1,8 +1,11 @@
+from re import L
 from django.shortcuts import render
 from django.views.generic import ListView
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Ingredients, MenuItems, RecipeRequirements, Purchase
 from .forms import IngredientAddForm, MenuAddForm, PurchaseForm, RecipeAddForm
+import numpy as np
 
 # Create your views here.
 
@@ -36,6 +39,46 @@ class RecipeList(ListView):
 class PurchaseList(ListView):
     model = Purchase
     template_name = 'inventory/purchase_list.html'
+
+# temp - trying to avoid creating a new...something
+# very, very likely not the ideal way to do this  - check both projects for ideas
+def temp_purchase_list(request):
+    context = {}
+    # pull purchases
+    all_purchases = Purchase.objects.all()
+    # define rev, loss -> profit
+    revenue = 0.0
+    cost = 0.0
+
+    for purchase in all_purchases:
+        # first, revenue, since it's easy
+        purchase_revenue = purchase.menu_item.item_price * purchase.order_quantity
+        revenue += purchase_revenue
+
+        # now, cost; because one menu item per purchase:
+        purchase_item = purchase.menu_item
+        purchase_recipe = RecipeRequirements.objects.filter(menu_item=purchase_item)  # sub-optimal?
+        purchase_quantity = purchase.order_quantity 
+        # now to sum on ingredient cost
+        purchase_cost = sum([item.ingredient.price_per_unit * item.ingredient_quantity * purchase_quantity 
+                            for item in purchase_recipe])  # might work
+        cost += purchase_cost
+
+    temp = []
+    # simplest possible test
+    for purchase in [all_purchases[0]]:
+        iter_temp = [item.ingredient for item in RecipeRequirements.objects.filter(menu_item=purchase.menu_item)]
+        #purchase.reciperequirements_set.all()
+        temp.append(iter_temp)
+
+    revenue, cost = round(revenue, 2), round(cost, 2)
+    profit = revenue - cost
+
+    context['revenue'] = f'${revenue}'
+    context['cost'] = f'${cost}'
+    context['profit'] = f'${profit}'
+    context['temp'] = temp
+    return render(request, 'inventory/profit_and_loss.html', context)
 
 '''
 Editing Views

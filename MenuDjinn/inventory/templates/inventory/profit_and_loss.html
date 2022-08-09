@@ -1,0 +1,19 @@
+{% extends "./base.html" %}
+
+{% block content %}
+<h2>Profit and Loss</h2>
+<table id="profitandloss">
+  <tr>
+    <th>Revenue</th>
+    <th>Cost</th>
+    <th>Profit</th>
+  </tr>
+  
+  <tr>
+    <td>{{ revenue }}</td>
+    <td>{{ cost }}</td>
+    <td>{{ profit }}</td>
+  </tr>
+  
+</table>
+{% endblock %}
