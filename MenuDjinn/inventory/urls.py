@@ -18,6 +18,9 @@ urlpatterns = [
     # tougher - profit and loss
     path('profit-and-loss/', views.temp_purchase_list, name='profitandloss'),
     path('pandl-class-based', views.ProfitAndLoss.as_view(), name='classedprofitandloss'),
+    # experimental - timedsessions
+    path('timed-strings/', views.TimedStringsList.as_view(), name='timedstringslist'),
+    path('timed-strings/create/', views.timed_strings_create, name='timedstringscreate'),
     # login/logout
     path("accounts/", include("django.contrib.auth.urls"), name="login"),
     path('accounts/logout/', views.logout_view, name='logout'),

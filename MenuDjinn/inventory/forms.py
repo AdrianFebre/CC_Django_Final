@@ -1,5 +1,5 @@
 from django import forms
-from .models import Ingredients, MenuItems, RecipeRequirements, Purchase
+from .models import Ingredients, MenuItems, RecipeRequirements, Purchase, TimedStrings
 
 class IngredientAddForm(forms.ModelForm):
     class Meta:
@@ -25,3 +25,8 @@ class PurchaseForm(forms.ModelForm):
         model = Purchase
         fields = ('customer_name', 'menu_item', 'order_quantity')
         #exclude = ['purchase_price', 'purchase_timestamp']  # alt, less secure/clean
+
+class TimedStringAddForm(forms.ModelForm):
+    class Meta:
+        model = TimedStrings
+        fields = ('session_name', )  # no timestamp, I think

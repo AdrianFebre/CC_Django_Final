@@ -1,0 +1,28 @@
+{% extends "./base.html" %}
+
+{% block content %}
+<h2>Timed String List</h2>
+<!--Need to update this when form is ready-->
+<a href="{% url 'timedstringscreate' %}"><button class="btn">Add a Timed String</button></a>
+
+<table id="timedstrings">
+  <tr>
+    <th>Session Name</th>
+    <th>Timestamp</th>
+  </tr>
+	<tr>  
+  {% for timedstring in object_list|slice:"::-1"|slice:":10" %}  <!--Limit 10-->
+  </tr>
+  <tr>
+    <td>{{ timedstring.session_name }}</td>
+    <td>{{ timedstring.timestamp|time:"h:i:s a" }}</td>  <!-- Per Django/templates/builtins/stringformat -->
+    <!--allowed: https://docs.djangoproject.com/en/dev/ref/templates/builtins/#std-templatefilter-date-->
+    <!--the default strings/formatting can be adjusted in settings files I think-->
+  </tr>
+  <tr>
+    {% empty %}
+    <td>No Timed Sessions yet</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

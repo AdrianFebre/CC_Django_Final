@@ -104,3 +104,17 @@ class Purchase(models.Model):
     def get_absolute_url(self):
         return '..'
 
+# simple, experimental model used to test click-triggered functions
+class TimedStrings(models.Model):
+    '''
+    I just want a "name of session" string and a timestamp
+    '''
+    # basic metadata
+    session_name = models.CharField(max_length=50)
+    timestamp = models.DateTimeField(default=datetime.now())  # temp: default = now
+
+    # it's possible I'll need to house the function in here, but I doubt it
+    # I think it's housed in SQL-like logic in views
+
+    def get_absolute_url(self):
+        return '..'

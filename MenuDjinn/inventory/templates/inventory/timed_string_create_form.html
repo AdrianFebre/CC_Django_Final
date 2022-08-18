@@ -1,0 +1,13 @@
+{% extends './base.html' %}
+{% block content %}
+<h2>Create Timed String</h2>
+<form method="post">
+<div>
+  {% csrf_token %} 
+  <!--{{ form.as_p }}-->
+  <label name="session_name" for="session_name">Session Name:</label>
+  <input id="session_name" name="session_name"/>
+  <input type="submit" value="Submit" />
+</div>
+</form>
+{% endblock %}

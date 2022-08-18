@@ -1,12 +1,15 @@
 from re import L
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Ingredients, MenuItems, RecipeRequirements, Purchase
-from .forms import IngredientAddForm, MenuAddForm, PurchaseForm, RecipeAddForm
+from .models import Ingredients, MenuItems, RecipeRequirements, Purchase, TimedStrings
+from .forms import IngredientAddForm, MenuAddForm, PurchaseForm, RecipeAddForm, TimedStringAddForm
+from django.urls import reverse
+# bonus
 import numpy as np
+from datetime import datetime
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -45,6 +48,11 @@ class RecipeList(LoginRequiredMixin, ListView):
 class PurchaseList(LoginRequiredMixin, ListView):
     model = Purchase
     template_name = 'inventory/purchase_list.html'
+
+# new - for click event testing; see below for creation view
+class TimedStringsList(LoginRequiredMixin, ListView):
+    model = TimedStrings
+    template_name = 'inventory/timed_string_list.html'
 
 # temp - trying to avoid creating a new...something
 # very, very likely not the ideal way to do this  - check both projects for ideas
@@ -166,6 +174,24 @@ class PurchaseCreate(LoginRequiredMixin, CreateView):
     success_url = '..'
     '''
     form_class = PurchaseForm
+
+# first pass - do it the "easy" way with forms.py
+'''
+class TimedStringsCreate(LoginRequiredMixin, CreateView):
+    model = TimedStrings
+    template_name = 'inventory/timed_string_create_form.html'
+    form_class = TimedStringAddForm
+'''
+# second pass - a custom function - it works!!
+def timed_strings_create(request):
+  # Add your code below:
+  if request.method == "POST":
+    newSession = TimedStrings()
+    newSession.session_name = request.POST['session_name']
+    newSession.timestamp = datetime.now()  # here's the magic
+    newSession.save()
+    return HttpResponseRedirect(reverse('timedstringslist'))
+  return render(request, 'inventory/timed_string_create_form.html')
 
 # login/logout - just copy pasta'ing so far
 # login is broken - fix 1 per the internet: request.post[] -> request.POST.get()
